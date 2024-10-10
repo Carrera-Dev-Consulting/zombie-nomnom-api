@@ -4,9 +4,9 @@ build-backend = "pdm.backend"
 
 
 [project]
-name = "zombie_nomnom"
+name = "zombie_nomnom_api"
 dynamic = ["version"]
-description = "A Zombie Dice Game Engine Library and Executable"
+description = "An API for the zombie-nomnom pypi package with its own packaged react-app to load up and work with."
 readme = "README.md"
 requires-python = ">=3.10"
 
@@ -32,17 +32,22 @@ classifiers = [
 
 keywords = ["game", "engine", "dice"]
 
-dependencies = ["pydantic>=2.9.2", "click>=8.1.7"]
+dependencies = [
+    "zombie-nomnom >= 0.3.0",
+    "click >= 8.1.7",
+    "fastapi >= 0.115.0",
+    "uvicorn >= 0.31.1",
+]
 
 [project.urls]
-Homepage = "https://github.com/carrera-dev-consulting/zombie_nomnom"
-Documentation = "https://consulting.gxldcptrick.dev/zombie_nomnom/docs"
-Repository = "https://github.com/carrera-dev-consulting/zombie_nomnom"
-Issues = "https://github.com/carrera-dev-consulting/zombie_nomnom/issues"
-Changelog = "https://github.com/carrera-dev-consulting/zombie_nomnom/releases"
+Homepage = "https://github.com/carrera-dev-consulting/zombie-nomnom-api"
+Documentation = "https://consulting.gxldcptrick.dev/zombie-nomnom-api/docs"
+Repository = "https://github.com/carrera-dev-consulting/zombie-nomnom-api"
+Issues = "https://github.com/carrera-dev-consulting/zombie-nomnom-api/issues"
+Changelog = "https://github.com/carrera-dev-consulting/zombie-nomnom-api/releases"
 
 [project.scripts]
-zombie-nomnom = "zombie_nomnom.app:main"
+zombie-nomnom-api = "zombie_nomnom_api.app:main"
 
 [tool.pdm]
 version = { source = "scm" }

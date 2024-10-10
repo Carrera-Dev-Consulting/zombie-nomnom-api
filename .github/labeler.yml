@@ -1,18 +1,13 @@
 # Changes to the cli launcher for anything
-cli:
+routes:
   - all:
       - changed-files:
-          - any-glob-to-any-file: "zombie_nomnom/cli.py"
+          - any-glob-to-any-file: "zombie_nomnom_api/routes/**"
 # whenever we make changes to the core lib we tag it
 core:
   - all:
       - changed-files:
-          - any-glob-to-any-file: "zombie_nomnom/**"
-# Changes to the api and api related files
-api:
-  - all:
-      - changed-files:
-          - any-glob-to-any-file: "zombie_nomnom/api/**"
+          - any-glob-to-any-file: "zombie_nomnom_api/**"
 # Whenever we updated any of the tests
 tests:
   - all:
