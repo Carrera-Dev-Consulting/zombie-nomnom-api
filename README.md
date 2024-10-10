@@ -2,17 +2,13 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                  |    Stmts |     Miss |    Cover |   Missing |
-|-------------------------------------- | -------: | -------: | -------: | --------: |
-| zombie\_nomnom/\_\_init\_\_.py        |        5 |        0 |     100% |           |
-| zombie\_nomnom/\_\_main\_\_.py        |        0 |        0 |     100% |           |
-| zombie\_nomnom/app.py                 |       11 |        0 |     100% |           |
-| zombie\_nomnom/cli.py                 |       66 |        0 |     100% |           |
-| zombie\_nomnom/engine.py              |      161 |        0 |     100% |           |
-| zombie\_nomnom/models/\_\_init\_\_.py |        3 |        0 |     100% |           |
-| zombie\_nomnom/models/bag.py          |       33 |        0 |     100% |           |
-| zombie\_nomnom/models/dice.py         |       34 |        0 |     100% |           |
-|                             **TOTAL** |  **313** |    **0** | **100%** |           |
+| Name                                |    Stmts |     Miss |   Cover |   Missing |
+|------------------------------------ | -------: | -------: | ------: | --------: |
+| zombie\_nomnom\_api/\_\_init\_\_.py |        0 |        0 |    100% |           |
+| zombie\_nomnom\_api/\_\_main\_\_.py |        0 |        0 |    100% |           |
+| zombie\_nomnom\_api/app.py          |       20 |       20 |      0% |      7-36 |
+| zombie\_nomnom\_api/server.py       |       10 |        2 |     80% |       6-7 |
+|                           **TOTAL** |   **30** |   **22** | **27%** |           |
 
 
 ## Setup coverage badge
