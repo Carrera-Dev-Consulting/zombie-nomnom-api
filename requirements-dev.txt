@@ -1,0 +1,6 @@
+black
+pytest
+pytest-cov
+pytest-mock
+pytest-html
+pdoc
