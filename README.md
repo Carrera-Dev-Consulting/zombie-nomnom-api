@@ -4,11 +4,11 @@
 
 | Name                                |    Stmts |     Miss |   Cover |   Missing |
 |------------------------------------ | -------: | -------: | ------: | --------: |
-| zombie\_nomnom\_api/\_\_init\_\_.py |        0 |        0 |    100% |           |
+| zombie\_nomnom\_api/\_\_init\_\_.py |        1 |        0 |    100% |           |
 | zombie\_nomnom\_api/\_\_main\_\_.py |        0 |        0 |    100% |           |
 | zombie\_nomnom\_api/app.py          |       20 |       20 |      0% |      7-36 |
 | zombie\_nomnom\_api/server.py       |       10 |        2 |     80% |       6-7 |
-|                           **TOTAL** |   **30** |   **22** | **27%** |           |
+|                           **TOTAL** |   **31** |   **22** | **29%** |           |
 
 
 ## Setup coverage badge
