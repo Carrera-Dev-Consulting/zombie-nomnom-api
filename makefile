@@ -23,3 +23,5 @@ render-cov:
 .PHONY: format
 format:
 	black .
+install:
+	pip install . -r requirements-dev.txt
