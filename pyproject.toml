@@ -50,5 +50,5 @@ Changelog = "https://github.com/carrera-dev-consulting/zombie-nomnom-api/release
 zombie-nomnom-api = "zombie_nomnom_api.app:main"
 
 [tool.pdm]
-version = { source = "file", path="zombie_nomnom_api/__init__.py"}
+version = { source = "scm", tag_regex = "^(\\d+\\.){2}\\d+$"}
 distribution = true
