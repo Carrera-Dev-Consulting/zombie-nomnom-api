@@ -15,18 +15,21 @@ type Game {
     id: ID!
     moves: [Move!]!
     players: [Player!]!
-    round: Round!
+    round: Round
+    gameOver: Boolean!
+    winner: Player
 }
 
 type Round {
-    player: Player
-    bag: DieBag
+    player: Player!
+    bag: DieBag!
     points: Int!
+    ended: Boolean
 }
 
 type DieBag {
     dice: [Die!]!
-    drawnDie: [Die!]!
+    drawnDice: [Die!]!
 }
 
 type Player {
@@ -49,9 +52,9 @@ enum DieColor {
 }
 
 enum DieFace {
-    Brain
-    Shot
-    Foot
+    BRAIN
+    SHOTGUN
+    FOOT
 }
 
 type Move {

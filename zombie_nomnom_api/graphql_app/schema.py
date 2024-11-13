@@ -2,11 +2,13 @@ from logging import getLogger
 import os
 
 from ariadne import (
+    EnumType,
     ObjectType,
     SchemaBindable,
     make_executable_schema,
     load_schema_from_path,
 )
+from zombie_nomnom import DieColor, Face
 import zombie_nomnom_api
 
 
@@ -68,3 +70,11 @@ class ObjectTypeBuilder:
 
 Query = ObjectTypeBuilder("Query")
 Mutation = ObjectTypeBuilder("Mutation")
+GameResource = ObjectTypeBuilder("Game")
+Round = ObjectTypeBuilder("Round")
+PlayerResource = ObjectTypeBuilder("Player")
+DieBagResource = ObjectTypeBuilder("DieBag")
+DieResource = ObjectTypeBuilder("Die")
+Move = ObjectTypeBuilder("Move")
+register(EnumType("DieColor", DieColor))
+register(EnumType("DieFace", Face))
