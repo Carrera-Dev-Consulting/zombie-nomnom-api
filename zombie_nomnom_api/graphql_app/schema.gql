@@ -1,7 +1,63 @@
 type Query {
-    hello: String!
+    games(id: ID): [Game!]!
 }
 
 type Mutation {
-    hello: String!
+    createGame(players: [String!]!): GameResult!
+}
+
+type GameResult {
+    game: Game
+    errors: [String!]!
+}
+
+type Game {
+    id: ID!
+    moves: [Move!]!
+    players: [Player!]!
+    round: Round
+    gameOver: Boolean!
+    winner: Player
+}
+
+type Round {
+    player: Player!
+    bag: DieBag!
+    points: Int!
+    ended: Boolean
+}
+
+type DieBag {
+    dice: [Die!]!
+    drawnDice: [Die!]!
+}
+
+type Player {
+    id: ID!
+    name: String!
+    score: Int!
+    hand: [Die!]!
+}
+
+type Die {
+    sides: [DieFace!]!
+    currentFace: DieFace
+    color: DieColor!
+}
+
+enum DieColor {
+    RED
+    GREEN
+    YELLOW
+}
+
+enum DieFace {
+    BRAIN
+    SHOTGUN
+    FOOT
+}
+
+type Move {
+    name: String!
+    player: Player
 }
