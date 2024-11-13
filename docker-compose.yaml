@@ -1,0 +1,15 @@
+services:
+  dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: deploy
+    ports: 
+    - 5000:5000
+    volumes:
+    - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
