@@ -4,7 +4,6 @@ Module that contains the click entrypoint for our cli interface.
 We only handle a handful of configurations for out webserver.
 """
 
-import os
 from typing import Any
 import re
 import click
