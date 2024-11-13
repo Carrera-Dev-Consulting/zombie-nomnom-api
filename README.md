@@ -2,13 +2,19 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                |    Stmts |     Miss |   Cover |   Missing |
-|------------------------------------ | -------: | -------: | ------: | --------: |
-| zombie\_nomnom\_api/\_\_init\_\_.py |        0 |        0 |    100% |           |
-| zombie\_nomnom\_api/\_\_main\_\_.py |        0 |        0 |    100% |           |
-| zombie\_nomnom\_api/app.py          |       20 |       20 |      0% |      7-36 |
-| zombie\_nomnom\_api/server.py       |       10 |        2 |     80% |       6-7 |
-|                           **TOTAL** |   **30** |   **22** | **27%** |           |
+| Name                                             |    Stmts |     Miss |   Cover |   Missing |
+|------------------------------------------------- | -------: | -------: | ------: | --------: |
+| zombie\_nomnom\_api/\_\_init\_\_.py              |        2 |        0 |    100% |           |
+| zombie\_nomnom\_api/\_\_main\_\_.py              |        0 |        0 |    100% |           |
+| zombie\_nomnom\_api/app.py                       |       19 |       19 |      0% |      7-35 |
+| zombie\_nomnom\_api/game.py                      |       21 |        0 |    100% |           |
+| zombie\_nomnom\_api/graphql\_app/\_\_init\_\_.py |        2 |        0 |    100% |           |
+| zombie\_nomnom\_api/graphql\_app/app.py          |        4 |        0 |    100% |           |
+| zombie\_nomnom\_api/graphql\_app/dependencies.py |       24 |        3 |     88% |15, 23, 27 |
+| zombie\_nomnom\_api/graphql\_app/resolvers.py    |       72 |        0 |    100% |           |
+| zombie\_nomnom\_api/graphql\_app/schema.py       |       50 |        0 |    100% |           |
+| zombie\_nomnom\_api/server.py                    |       12 |        2 |     83% |       7-8 |
+|                                        **TOTAL** |  **206** |   **24** | **88%** |           |
 
 
 ## Setup coverage badge
