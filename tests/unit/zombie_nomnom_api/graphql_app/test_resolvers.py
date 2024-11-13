@@ -1,17 +1,110 @@
 import pytest
-from zombie_nomnom_api.game import GameMaker
+from zombie_nomnom import Die, DieBag, DieColor, Face, ZombieDieGame
+from zombie_nomnom_api.game import Game, GameMaker
+from zombie_nomnom.engine import DrawDice, Score
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
-from zombie_nomnom_api.graphql_app.resolvers import games_resolver, create_game_resolver
+from zombie_nomnom_api.graphql_app.resolvers import (
+    games_resolver,
+    create_game_resolver,
+    draw_dice_resolver,
+    end_round_resolver,
+)
 
 
 @pytest.fixture
 def di_container() -> DIContainer:
-    return DIContainer()
+    container = DIContainer()
+    container[DrawDice] = DrawDice()
+    container[Score] = Score()
+    return container
 
 
 @pytest.fixture
 def game_maker():
     return GameMaker()
+
+
+class FakeGameMaker(GameMaker):
+
+    def make_game(self, players: list[str]) -> Game:
+        game = Game(game=ZombieDieGame(players, bag_function=self.winning_bag))
+        self.session[game.id] = game
+        return game
+
+    def winning_bag(self):
+        bag = DieBag(dice=[Die(faces=[Face.BRAIN] * 6) for _ in range(6)])
+        return bag
+
+
+def test_end_round_resolver_when_game_does_not_exist_returns_error(
+    di_container: DIContainer,
+    game_maker: GameMaker,
+):
+    di_container[GameMaker] = game_maker
+    gameId = None
+    round = end_round_resolver(None, None, gameId=gameId, dependencies=di_container)
+    assert len(round["errors"]) == 1
+    assert "No game id provided" in round["errors"][0]
+
+
+def test_end_round_resolver_when_game_is_not_found_returns_error(
+    di_container: DIContainer,
+    game_maker: GameMaker,
+):
+    di_container[GameMaker] = game_maker
+    gameId = "None"
+    round = end_round_resolver(None, None, gameId=gameId, dependencies=di_container)
+    assert len(round["errors"]) == 1
+    assert f"Game id not found: {gameId}" in round["errors"][0]
+
+
+def test_end_round_resolver_ends_round_and_scores_the_user(di_container: DIContainer):
+    di_container[GameMaker] = FakeGameMaker()
+    game_maker: GameMaker = di_container[GameMaker]
+    game = game_maker.make_game(["player1"])
+
+    draw_dice_resolver(None, None, gameId=game.id, dependencies=di_container)
+    round = end_round_resolver(None, None, gameId=game.id, dependencies=di_container)
+
+    assert len(round["errors"]) == 0
+    assert round["round"] is not None
+    assert round["round"].ended
+    assert round["round"].player.total_brains == 3
+
+
+def test_draw_dice_resolver_draws_new_hand_when_draw_is_called(
+    di_container: DIContainer,
+):
+    di_container[GameMaker] = FakeGameMaker()
+    game_maker: GameMaker = di_container[GameMaker]
+
+    game = game_maker.make_game(["player1"])
+    round = draw_dice_resolver(None, None, gameId=game.id, dependencies=di_container)
+
+    assert len(round["errors"]) == 0
+    assert round["round"] is not None
+
+
+def test_draw_dice_resolver_when_game_does_not_exist_returns_error(
+    di_container: DIContainer,
+    game_maker: GameMaker,
+):
+    di_container[GameMaker] = game_maker
+    gameId = None
+    round = draw_dice_resolver(None, None, gameId=gameId, dependencies=di_container)
+    assert len(round["errors"]) == 1
+    assert "No game id provided" in round["errors"][0]
+
+
+def test_draw_dice_resolver_when_game_is_not_found_returns_error(
+    di_container: DIContainer,
+    game_maker: GameMaker,
+):
+    di_container[GameMaker] = game_maker
+    gameId = "None"
+    round = draw_dice_resolver(None, None, gameId=gameId, dependencies=di_container)
+    assert len(round["errors"]) == 1
+    assert f"Game id not found: {gameId}" in round["errors"][0]
 
 
 def test_games_resolver__when_given_an_id_and_game_exists__returns_list_with_game(

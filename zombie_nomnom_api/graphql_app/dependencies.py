@@ -2,6 +2,7 @@ from functools import cache
 from typing import Any
 
 from zombie_nomnom_api.game import GameMaker
+from zombie_nomnom.engine import DrawDice, Score
 
 
 class DIContainer:
@@ -31,4 +32,6 @@ class DIContainer:
 def bootstrap() -> DIContainer:
     container = DIContainer()
     container[GameMaker] = GameMaker()
+    container[DrawDice] = DrawDice()
+    container[Score] = Score()
     return container
