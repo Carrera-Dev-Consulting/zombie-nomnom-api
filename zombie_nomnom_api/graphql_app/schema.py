@@ -1,3 +1,4 @@
+from enum import Enum
 from logging import getLogger
 import os
 
@@ -50,7 +51,7 @@ def register(graphql_type: TRegistry) -> TRegistry:
     return graphql_type
 
 
-def regsiter_enum(enum_type: EnumType, *, name: str = None):
+def regsiter_enum(enum_type: type[Enum], *, name: str = None):
     """Shortcut function to register the enum type to the graphql type registry.
 
     **Parameters**
