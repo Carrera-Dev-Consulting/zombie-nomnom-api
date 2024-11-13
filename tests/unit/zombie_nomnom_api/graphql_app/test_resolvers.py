@@ -1,7 +1,7 @@
 import pytest
 from zombie_nomnom_api.game import GameMaker
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
-from zombie_nomnom_api.graphql_app.resolvers import games_resolver
+from zombie_nomnom_api.graphql_app.resolvers import games_resolver, create_game_resolver
 
 
 @pytest.fixture
@@ -46,3 +46,31 @@ def test_games_resolver__when_not_given_an_id__returns_all_games(
 
     games = games_resolver(None, None, dependencies=di_container)
     assert len(games) == 2
+
+
+def test_create_game_resolver__when_no_players_provided__returns_error(
+    di_container: DIContainer,
+    game_maker: GameMaker,
+):
+    di_container[GameMaker] = game_maker
+    response = create_game_resolver(None, None, players=[], dependencies=di_container)
+
+    assert response["errors"]
+    assert response["game"] is None
+
+    assert len(list(game_maker)) == 0
+
+
+def test_create_game_resolver__when_players_provided__returns_new_game_instance(
+    di_container: DIContainer,
+    game_maker: GameMaker,
+):
+    di_container[GameMaker] = game_maker
+    response = create_game_resolver(
+        None, None, players=["Player One"], dependencies=di_container
+    )
+
+    assert response["errors"] == []
+    assert response["game"]
+
+    assert len(list(game_maker)) == 1
