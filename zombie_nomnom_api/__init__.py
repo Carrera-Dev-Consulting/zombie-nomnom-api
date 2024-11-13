@@ -5,6 +5,6 @@
 """
 
 import logging
+import os
 
-
-logging.basicConfig(level="DEBUG")
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", "DEBUG"))
