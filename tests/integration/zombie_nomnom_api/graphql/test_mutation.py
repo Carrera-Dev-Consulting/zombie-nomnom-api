@@ -34,7 +34,7 @@ def test_mutation_create_game__when_making_a_game__creates_a_game_with_maker(
         query=mutation_query,
         variables={"players": ["player one", "player two"]},
     )
-    
+
     assert reponse.status_code == 200
     assert len(list(maker)) == original_value + 1
     value = reponse.json()["data"]["createGame"]
