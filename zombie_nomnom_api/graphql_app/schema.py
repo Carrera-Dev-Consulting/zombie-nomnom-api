@@ -51,7 +51,7 @@ def register(graphql_type: TRegistry) -> TRegistry:
     return graphql_type
 
 
-def regsiter_enum(enum_type: type[Enum], *, name: str = None):
+def register_enum(enum_type: type[Enum], *, name: str = None):
     """Shortcut function to register the enum type to the graphql type registry.
 
     **Parameters**
@@ -108,5 +108,5 @@ Move type that we expose in graphql
 """
 
 # Register enums for GQL
-regsiter_enum(DieColor)
-regsiter_enum(Face, name="DieFace")
+register_enum(DieColor)
+register_enum(Face, name="DieFace")
