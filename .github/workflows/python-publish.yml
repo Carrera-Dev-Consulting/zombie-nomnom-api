@@ -79,4 +79,4 @@ jobs:
               ${{ env.IMAGE_NAME }}
               ${{ env.LATEST_IMAGE_NAME }}
             build-args: |
-              PDM_BUILD_SCM_VERSION="${{ github.event.release.tag_name }}"
+              PDM_BUILD_SCM_VERSION=${{ github.event.release.tag_name }}
