@@ -1,5 +1,6 @@
 import pytest
 from zombie_nomnom import Die, DieBag, DieColor, Face, ZombieDieGame
+from tests.utils import FakeGameMaker
 from zombie_nomnom_api.game import Game, GameMaker
 from zombie_nomnom.engine import DrawDice, Score
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
@@ -22,18 +23,6 @@ def di_container() -> DIContainer:
 @pytest.fixture
 def game_maker():
     return GameMaker()
-
-
-class FakeGameMaker(GameMaker):
-
-    def make_game(self, players: list[str]) -> Game:
-        game = Game(game=ZombieDieGame(players, bag_function=self.winning_bag))
-        self.session[game.id] = game
-        return game
-
-    def winning_bag(self):
-        bag = DieBag(dice=[Die(faces=[Face.BRAIN] * 6) for _ in range(6)])
-        return bag
 
 
 def test_end_round_resolver_when_game_does_not_exist_returns_error(
