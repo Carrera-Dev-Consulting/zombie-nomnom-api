@@ -46,9 +46,9 @@ jobs:
           password: ${{ secrets.PYPI_API_TOKEN }}
       - name: "✏️ Generate release changelog"
         id: changelog
-        uses: heinrichreimer/action-github-changelog-generator@v2.4
+        uses: janheinrichmerker/action-github-changelog-generator@v2.3
         with:
-          exclude-tags: '^(\d+.){2}\d+-main.+$'
+          excludeTagsRegex: '^(\d+.){2}\d+-main.+$'
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: peter-evans/create-pull-request@v7
         with:
