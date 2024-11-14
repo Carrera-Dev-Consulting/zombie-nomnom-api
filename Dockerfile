@@ -1,4 +1,4 @@
-FROM python:3.10-slim as deploy
+FROM python:3.10-slim AS deploy
 
 ARG PDM_BUILD_SCM_VERSION="0.0.0"
 
@@ -12,7 +12,7 @@ RUN pip install .
 EXPOSE 5000
 ENTRYPOINT ["zombie-nomnom-api", "--port", "5000", "--host", "0.0.0.0"]
 
-FROM deploy as test
+FROM deploy AS test
 
 COPY tests tests
 COPY requirements-dev.txt requirements-dev.txt
