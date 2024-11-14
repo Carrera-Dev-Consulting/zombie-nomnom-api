@@ -10,11 +10,11 @@
 | zombie\_nomnom\_api/game.py                      |       21 |        0 |    100% |           |
 | zombie\_nomnom\_api/graphql\_app/\_\_init\_\_.py |        2 |        0 |    100% |           |
 | zombie\_nomnom\_api/graphql\_app/app.py          |        4 |        0 |    100% |           |
-| zombie\_nomnom\_api/graphql\_app/dependencies.py |       24 |        3 |     88% |15, 23, 27 |
-| zombie\_nomnom\_api/graphql\_app/resolvers.py    |       72 |        0 |    100% |           |
+| zombie\_nomnom\_api/graphql\_app/dependencies.py |       27 |        3 |     89% |16, 24, 28 |
+| zombie\_nomnom\_api/graphql\_app/resolvers.py    |       93 |        2 |     98% |  117, 119 |
 | zombie\_nomnom\_api/graphql\_app/schema.py       |       50 |        0 |    100% |           |
 | zombie\_nomnom\_api/server.py                    |       12 |        2 |     83% |       7-8 |
-|                                        **TOTAL** |  **210** |   **27** | **87%** |           |
+|                                        **TOTAL** |  **234** |   **29** | **88%** |           |
 
 
 ## Setup coverage badge
