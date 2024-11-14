@@ -4,10 +4,17 @@ type Query {
 
 type Mutation {
     createGame(players: [String!]!): GameResult!
+    drawDice(gameId: ID!) : RoundResult!
+    endRound(gameId: ID!) : RoundResult!
 }
 
 type GameResult {
     game: Game
+    errors: [String!]!
+}
+
+type RoundResult {
+    round: Round,
     errors: [String!]!
 }
 

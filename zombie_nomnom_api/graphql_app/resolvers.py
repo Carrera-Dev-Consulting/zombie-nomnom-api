@@ -1,4 +1,5 @@
 from zombie_nomnom import Command, Die, DieBag, DieColor, Face, Player, RoundState
+from zombie_nomnom.engine import DrawDice, Score
 from zombie_nomnom_api.game import Game, GameMaker
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
 from .schema import (
@@ -32,6 +33,31 @@ def create_game_resolver(
     maker: GameMaker = dependencies[GameMaker]
     game = maker.make_game(players)
     return {"errors": [], "game": game}
+
+
+@Mutation.field("drawDice")
+def draw_dice_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap()):
+
+    if gameId is None:
+        return {"errors": ["No game id provided"], "round": None}
+    maker: GameMaker = dependencies[GameMaker]
+    dice: DrawDice = dependencies[DrawDice]
+    gameInstance: Game = maker[gameId]
+    if gameInstance is None:
+        return {"errors": [f"Game id not found: {gameId}"], "round": None}
+    return {"errors": [], "round": gameInstance.game.process_command(dice)}
+
+
+@Mutation.field("endRound")
+def end_round_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap()):
+    if gameId is None:
+        return {"errors": ["No game id provided"], "round": None}
+    maker: GameMaker = dependencies[GameMaker]
+    score: Score = dependencies[Score]
+    gameInstance: Game = maker[gameId]
+    if gameInstance is None:
+        return {"errors": [f"Game id not found: {gameId}"], "round": None}
+    return {"errors": [], "round": gameInstance.game.process_command(score)}
 
 
 @GameResource.field("gameOver")
