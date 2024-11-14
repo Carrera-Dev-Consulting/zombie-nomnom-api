@@ -25,3 +25,6 @@ format:
 	black .
 install:
 	pip install . -r requirements-dev.txt
+.PHONY: package
+package:
+	ytt -f deployment/lib/schema.yaml -f deployment/envs/${ENVIRONMENT}/values.yaml -f deployment/deployment.yaml -f deployment/ingress.yaml -f deployment/namespace.yaml -f deployment/service.yaml > zombie-nomnom-api-${ENVIRONMENT}.yaml
