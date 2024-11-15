@@ -60,6 +60,7 @@ jobs:
         run: |
           mv deployment-yaml/deployment.yaml ${{ secrets.MAIN_CLUSTER_PATH }}/${{ env.FILE_NAME }}
           rm -r deployment-yaml
+          git status
       - uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.FLUX_REPO_TOKEN }}
