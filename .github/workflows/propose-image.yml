@@ -11,6 +11,8 @@ on:
         options:
           - dev
           - prod
+env:
+  FILE_NAME: zombie-nomnom-api-${{github.event.inputs.env}}.yaml
 jobs:
   build-deployment-yaml:
     runs-on: ubuntu-latest
@@ -54,13 +56,13 @@ jobs:
         with:
           name: deployment.yaml
           path: deployment.yaml
-      - name: Override zombie-nomnom-api-${{github.event.inputs.env}}.yaml
+      - name: Create or Replace ${{ env.FILE_NAME }}
         run: |
-          mv deployment.yaml deployment/zombie-nomnom-api-${{github.event.inputs.env}}.yaml
+          mv deployment.yaml ${{ secrets.MAIN_CLUSTER_PATH }}/${{ env.FILE_NAME }}
       - uses: peter-evans/create-pull-request@v7
         with:
           base: main
-          commit-message: Updating zombie-nomnom-api-${{github.event.inputs.env}}.yaml to version ${{ github.event.inputs.version }}
+          commit-message: Updating ${{ env.FILE_NAME }} to version ${{ github.event.inputs.version }}
           draft: true
           labels: automated,deployment
           branch: update-zombie-nomnom-api-${{github.event.inputs.env}}-${{ github.event.inputs.version }}
