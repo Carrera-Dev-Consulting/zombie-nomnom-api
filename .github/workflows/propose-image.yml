@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-          repository: ${{ secrets.FLUX_REPO }}
+          repository: ${{ vars.FLUX_REPO }}
           token: ${{ secrets.FLUX_REPO_TOKEN }}
       - uses: actions/download-artifact@v4
         with:
