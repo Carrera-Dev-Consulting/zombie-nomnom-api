@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.0](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/tree/0.3.0) (2024-11-15)
+
+[Full Changelog](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/compare/0.2.2...0.3.0)
+
+**Merged pull requests:**
+
+- build\(k8s\): Trying to fix the version check [\#34](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/34) ([gxldCptRick](https://github.com/gxldCptRick))
+- build\(k8s\): Adding new workflow to open pr on our flux repo when we want to deploy new versions of the code. [\#33](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/33) ([gxldCptRick](https://github.com/gxldCptRick))
+- chore\(changelog\): Updating Changelog for version 0.2.2 [\#31](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/31) ([github-actions[bot]](https://github.com/apps/github-actions))
+
 ## [0.2.2](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/tree/0.2.2) (2024-11-14)
 
 [Full Changelog](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/compare/0.2.1...0.2.2)
