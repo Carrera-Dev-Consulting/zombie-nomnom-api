@@ -1,0 +1,51 @@
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version we are marking this release as
+        required: true
+      env:
+        description: Env to deploy too
+        type: choice
+        options:
+          - dev
+          - prod
+jobs:
+  build-deployment-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: carvel-dev/setup-action@v2
+        with:
+          only: ytt
+      - name: Build deployment yaml
+        run: |
+          ytt -f deployment/lib/schema.yaml -f deployment/envs/${{ github.event.inputs.env }}/values.yaml -f deployment/deployment.yaml -f deployment/ingress.yaml -f deployment/namespace.yaml -f deployment/service.yaml > deployment.yaml
+      - name: Save deployment yaml as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment.yaml
+          path: deployment.yaml
+  open-pr-with-yaml:
+    runs-on: ubuntu-latest
+    needs: build-deployment-yaml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          repository: ${{ secrets.FLUX_REPO }}
+          token: ${{ secrets.FLUX_REPO_TOKEN }}
+      - uses: actions/download-artifact@v3
+        with:
+          name: deployment.yaml
+          path: ${{ secrets.MAIN_CLUSTER_PATH }}/zombie-nomnom-api-${{github.event.inputs.env}}.yaml
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          base: main
+          commit-message: Updating zombie-nomnom-api-${{github.event.inputs.env}}.yaml to version ${{ github.event.inputs.version }}
+          draft: true
+          labels: automated,deployment
+          branch: update-zombie-nomnom-api-${{github.event.inputs.env}}-${{ github.event.inputs.version }}
+          title: "deployment(zombie-nomnom-api):  ${{ github.event.inputs.version }}"
