@@ -51,7 +51,7 @@ jobs:
         with:
           ref: main
           repository: ${{ vars.FLUX_REPO }}
-          token: ${{ secrets.FLUX_REPO_TOKEN }}
+          ssh-key: ${{ secrets.FLUX_REPO_TOKEN }}
       - uses: actions/download-artifact@v4
         with:
           name: deployment-yaml
@@ -62,6 +62,7 @@ jobs:
           rm -r deployment-yaml
       - uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.FLUX_REPO_TOKEN }}
           base: main
           commit-message: Updating ${{ env.FILE_NAME }} to version ${{ github.event.inputs.version }}
           draft: true
