@@ -53,7 +53,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: deployment.yaml
-          path: ${{ secrets.MAIN_CLUSTER_PATH }}/zombie-nomnom-api-${{github.event.inputs.env}}.yaml
+          path: deployment.yaml
+      - name: Override zombie-nomnom-api-${{github.event.inputs.env}}.yaml
+        run: |
+          mv deployment.yaml deployment/zombie-nomnom-api-${{github.event.inputs.env}}.yaml
       - uses: peter-evans/create-pull-request@v7
         with:
           base: main
