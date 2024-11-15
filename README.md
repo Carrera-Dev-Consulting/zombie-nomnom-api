@@ -5,6 +5,17 @@ This is a game engine that is modeled after the popular board game zombie dice. 
 
 [![Test and Deploy Docs](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/actions/workflows/deploy-docs.yaml/badge.svg)](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/actions/workflows/deploy-docs.yaml)
 
+Table of Contents
+---
+
+- [Useful Links](#useful-links)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Running Locally](#running-locally)
+- [GraphQL Usage](#graphql-usage)
+    - [Queries](#queries)
+    - [Mutations](#mutations)
+
 Useful Links
 ---
 
@@ -29,9 +40,448 @@ Usage
 To launch the app you will just need to run the package directly.
 
 ```bash
-> zombie-nomnom-api
-#TODO: Fill in what the output will look like here.
+    > zombie-nomnom-api
+
+DEBUG:zombie_nomnom_api.graphql_app.schema:Registered schemas: ['Query', 'Mutation', 'Game', 'Round', 'Player', 'DieBag', 'Die', 'Move', 'DieColor', 'DieFace'] 
+DEBUG:asyncio:Using proactor: IocpProactor
+INFO:     Started server process [16240]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://localhost:5000 (Press CTRL+C to quit)
 ```
+
+CLI Support the following params
+
+- `--host/-h` hostname you want to server your api from. defaults to `"localhost"`
+- `--port/-p` port you want to listen on. defaults to `5000`
+- `--worker-count/-w` amount of worker tasks to run concurrently. defaults to `1`
+
+```bash
+    > zombie-nomnom-api -p 5000 -h 0.0.0.0 -w 10
+```
+
+Running locally
+---
+
+To run the service locally you simply need to run the module directly with python like:
+
+```bash
+    > python -m zombie_nomnom_api
+```
+
+GraphQL Usage
+---
+
+For playing around with graphql queries please refer to [our hosted playground](https://zombie-nomnom-api-dev.gxldcptrick.dev)
+
+### Queries
+
+**Query All Games**
+
+<details>
+    <summary>GQL Query</summary>
+
+```graphql
+    query GetAllGames {
+        games {
+            id
+            moves {
+                name
+                player {
+                    id
+                    name
+                }
+            }
+            players {
+                id
+                name
+                score
+                hand {
+                    color
+                    currentFace
+                }
+            }
+            round {
+                player {
+                    id
+                }
+                bag {
+                    dice {
+                        color
+                        currentFace
+                        sides
+                    }
+                    drawnDice {
+                        color
+                        currentFace
+                    }
+                }
+                points
+                ended
+            }
+            gameOver
+            winner {
+                id
+                name
+            }
+        }
+    }
+```
+
+</details>
+
+<details>
+    <summary>Example JSON</summary>
+
+```json
+{
+  "data": {
+    "games": [
+      {
+        "id": "b7ca3741-a850-4c11-83d5-15901b1b371b",
+        "moves": [
+          {
+            "name": "Score",
+            "player": {
+              "id": "61da55d0-0fee-48da-a613-0cb767d8eab2",
+              "name": "player"
+            }
+          }
+        ],
+        "players": [
+          {
+            "id": "61da55d0-0fee-48da-a613-0cb767d8eab2",
+            "name": "player",
+            "score": 0,
+            "hand": []
+          }
+        ],
+        "round": {
+          "player": {
+            "id": "61da55d0-0fee-48da-a613-0cb767d8eab2"
+          },
+          "bag": {
+            "dice": [
+              {
+                "color": "GREEN",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "GREEN",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "GREEN",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "GREEN",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "GREEN",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "GREEN",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "YELLOW",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "YELLOW",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "YELLOW",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "YELLOW",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "RED",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN",
+                  "SHOTGUN",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "RED",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN",
+                  "SHOTGUN",
+                  "SHOTGUN"
+                ]
+              },
+              {
+                "color": "RED",
+                "currentFace": null,
+                "sides": [
+                  "BRAIN",
+                  "FOOT",
+                  "FOOT",
+                  "SHOTGUN",
+                  "SHOTGUN",
+                  "SHOTGUN"
+                ]
+              }
+            ],
+            "drawnDice": []
+          },
+          "points": 0,
+          "ended": false
+        },
+        "gameOver": false,
+        "winner": null
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+### Mutations
+
+Play Zombie nom nom through mutations
+
+**Creates a Game**
+
+<details>
+    <summary>GQL Query</summary>
+
+```graphql
+    mutation MakeAGame($players: [String!]!){
+        createGame(players: $players) {
+            errors
+            game {
+                id
+                moves {
+                    name
+                    player {
+                        id
+                        name
+                    }
+                }
+                players {
+                    id
+                    name
+                }
+            }
+        }
+    }
+```
+
+</details>
+
+<details>
+    <summary>Example JSON</summary>
+
+```json
+{
+  "data": {
+    "createGame": {
+      "errors": [],
+      "game": {
+        "id": "88041563-5774-4d4a-bcee-5bde15fd2b38",
+        "moves": [],
+        "players": [
+          {
+            "id": "069d9123-4dea-4d33-8bbf-8fe3cff6fd32",
+            "name": "player"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+
+
+**Draw dice**
+
+<details>
+<summary>GQL Query</summary>
+```graphql
+    mutation DrawDice($gameId: ID!) {
+        drawDice(gameId: $gameId) {
+            errors
+            round {
+                player {
+                    hand {
+                        currentFace
+                    }
+                }
+            }
+        }
+    }
+```
+</details>
+
+<details>
+<summary>Example JSON</summary>
+
+```json
+{
+  "data": {
+    "drawDice": {
+      "errors": [],
+      "round": {
+        "player": {
+          "hand": [
+            {
+              "currentFace": "BRAIN"
+            },
+            {
+              "currentFace": "BRAIN"
+            },
+            {
+              "currentFace": "FOOT"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+
+
+**End your turn**
+<details>
+<summary>GQL Query</summary>
+```graphql
+    mutation EndRound($gameId: ID!){
+        endRound(gameId: $gameId){
+            errors
+            round{
+                player{
+                    score
+                }
+                ended
+            }
+        }
+    }
+```
+</details>
+
+<details>
+<summary>Example JSON</summary>
+
+```json
+{
+  "data": {
+    "endRound": {
+      "errors": [],
+      "round": {
+        "player": {
+          "score": 0
+        },
+        "ended": true
+      }
+    }
+  }
+}
+```
+
+</details>
 
 Contribution
 ---
