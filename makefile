@@ -14,6 +14,9 @@ docs:
 build-docs:
 	make cov-all
 	pdoc ./zombie_nomnom_api -o ./docs
+.PHONY: serve-docs
+serve-docs:
+	python -m http.server -d docs 8080
 .PHONY: cov-all
 cov-all:
 	pytest tests --cov=zombie_nomnom_api --cov-report=html:docs/coverage --html=docs/coverage/report.html
