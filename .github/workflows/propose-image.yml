@@ -36,7 +36,7 @@ jobs:
           only: ytt
       - name: Build deployment yaml
         run: |
-          ytt -f deployment/lib/schema.yaml -f deployment/envs/${{ github.event.inputs.env }}/values.yaml -f deployment/deployment.yaml -f deployment/ingress.yaml -f deployment/namespace.yaml -f deployment/service.yaml > deployment.yaml
+          ytt -v image="${{ github.event.inputs.version }}"  -f deployment/lib/schema.yaml -f deployment/envs/${{ github.event.inputs.env }}/values.yaml -f deployment/deployment.yaml -f deployment/ingress.yaml -f deployment/namespace.yaml -f deployment/service.yaml > deployment.yaml
       - name: Save deployment yaml as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -58,8 +58,8 @@ jobs:
           path: deployment-yaml
       - name: Create or Replace ${{ env.FILE_NAME }}
         run: |
-          cat deployment-yaml/deployment.yaml
           mv deployment-yaml/deployment.yaml ${{ vars.MAIN_CLUSTER_PATH }}/${{ env.FILE_NAME }}
+          rm deployment-yaml
           git status
       - uses: peter-evans/create-pull-request@v7
         with:
