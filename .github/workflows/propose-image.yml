@@ -1,3 +1,4 @@
+name: Propose Image Deployment
 on:
   workflow_dispatch:
     inputs:
@@ -21,9 +22,11 @@ jobs:
       - name: Check if version is valid
         shell: bash
         run: |
-          if [[ ! $(git tag -l "${{ github.event.inputs.version }}") ]]; then
-            echo "Version is not a tag on repo: ${{ github.event.inputs.version }}"
-            exit 1
+          if [ $(git tag -l "${{ github.event.inputs.version }}") ]; then
+              echo "Valid version"
+          else
+              echo "Invalid version ${{ github.event.inputs.version }}"
+              exit 1
           fi
       - uses: carvel-dev/setup-action@v2
         with:
