@@ -58,6 +58,7 @@ jobs:
           path: deployment-yaml
       - name: Create or Replace ${{ env.FILE_NAME }}
         run: |
+          cat deployment-yaml/deployment.yaml
           mv deployment-yaml/deployment.yaml ${{ vars.MAIN_CLUSTER_PATH }}/${{ env.FILE_NAME }}
           git status
       - uses: peter-evans/create-pull-request@v7
