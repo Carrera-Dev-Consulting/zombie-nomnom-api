@@ -66,7 +66,7 @@ jobs:
           token: ${{ secrets.FLUX_REPO_TOKEN }}
           base: main
           commit-message: Updating ${{ env.FILE_NAME }} to version ${{ github.event.inputs.version }}
-          draft: true
+          draft: false
           labels: automated,deployment
           branch: update-zombie-nomnom-api-${{github.event.inputs.env}}-${{ github.event.inputs.version }}
           title: "deployment(zombie-nomnom-api):  ${{ github.event.inputs.version }}"
