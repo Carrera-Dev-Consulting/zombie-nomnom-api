@@ -7,18 +7,22 @@ type Query {
 }
 
 type Mutation {
+
     """
     Creates a new game requires at least one player to start the game.
 
     A string array is required each string will create a player for the game.
     """
     createGame(players: [String!]!): GameResult!
+
+
     """
     When drawDice is called it will pull three dice and return the rolled results of the dice for the current player. 
 
     A gameId is required to drawDice
     """
     drawDice(gameId: ID!) : RoundResult!
+
     """
     endRound is used to end the current players turn. All points will be calculated and all dice will be returned into the bag.
 
