@@ -8,8 +8,15 @@ services:
     - 5000:5000
     volumes:
     - .:/app
+  mongo:
+    image: mongo:8.0.0
+    ports:
+      - 27017:27017
+    volumes:
+      - ./database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
   tests:
     build:
       context: .
       dockerfile: Dockerfile
       target: test
+    requires: mongo

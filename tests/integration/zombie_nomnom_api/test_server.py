@@ -1,6 +1,8 @@
 import json
-from fastapi.testclient import TestClient
 import httpx
+import pytest
+from fastapi.testclient import TestClient
+from zombie_nomnom_api import configs
 
 
 def test_api__when_requesting_health_check__returns_ok(api_client: TestClient):
@@ -14,3 +16,10 @@ def test_cors_function_for_api(api_client: TestClient):
         "/healthz", headers={"origin": "http://localhost:3000"}
     )
     assert response.headers.get("access-control-allow-origin") == "*"
+
+
+@pytest.mark.asyncio
+async def test_mongo_communication():
+    sut = configs.mongo_client()
+
+    await sut[configs.game_collection].find_one({})
