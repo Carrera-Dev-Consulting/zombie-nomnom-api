@@ -28,4 +28,9 @@ def healthz():
     return {"o": "k"}
 
 
+@fastapi_app.get("/version")
+def version():
+    return {"version": _version}
+
+
 fastapi_app.mount("/", graphql_app)
