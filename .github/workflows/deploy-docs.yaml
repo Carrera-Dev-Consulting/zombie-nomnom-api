@@ -86,8 +86,8 @@ jobs:
           path: coverage-report
       - name: Create Docs Package Dir
         run: |
-          mv -r pdoc-docs/docs docs
-          mv -r coverage-report/htmlcov docs/coverage
+          mv pdoc-docs/docs docs
+          mv coverage-report/htmlcov docs/coverage
 
       - uses: actions/upload-pages-artifact@v3
         with:
