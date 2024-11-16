@@ -60,6 +60,29 @@ CLI Support the following params
     > zombie-nomnom-api -p 5000 -h 0.0.0.0 -w 10
 ```
 
+### Configurations
+
+<details>
+    <summary>Cross Origin Resource Sharing (CORS)</summary>
+
+|Environment Variables|Description|
+|---|---|
+|`CORS_ORIGINS`|Comma separated list of origins to allow. Default: `["*"]`|
+|`CORS_ALLOW_CREDENTIALS`|Whether or not to allow credentials. Default: `True`|
+|`CORS_METHODS`|Comma separated list of methods to allow. Default: `["*"]`|
+|`CORS_HEADERS`|Comma separated list of headers to allow. Default: `["*"]`|
+
+</details>
+
+<details>
+    <summary>Logging</summary>
+
+|Environment Variables|Description|
+|---|---|
+|`LOG_LEVEL`|The log level to use. Default: `"DEBUG"`
+
+</details>
+
 Running locally
 ---
 
