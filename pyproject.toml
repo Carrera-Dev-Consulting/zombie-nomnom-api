@@ -6,7 +6,7 @@ build-backend = "pdm.backend"
 [project]
 name = "zombie_nomnom_api"
 dynamic = ["version"]
-description = "An API for the zombie-nomnom pypi package exposing functionality via a graphql."
+description = "An API for the zombie-nomnom pypi package exposing functionality via a graphql api."
 readme = "README.md"
 requires-python = ">=3.10"
 
