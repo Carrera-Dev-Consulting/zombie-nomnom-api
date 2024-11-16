@@ -4,7 +4,7 @@
 
 | Name                                             |    Stmts |     Miss |   Cover |   Missing |
 |------------------------------------------------- | -------: | -------: | ------: | --------: |
-| zombie\_nomnom\_api/\_\_init\_\_.py              |        3 |        0 |    100% |           |
+| zombie\_nomnom\_api/\_\_init\_\_.py              |       10 |        0 |    100% |           |
 | zombie\_nomnom\_api/\_\_main\_\_.py              |        0 |        0 |    100% |           |
 | zombie\_nomnom\_api/app.py                       |       22 |       22 |      0% |      7-39 |
 | zombie\_nomnom\_api/game.py                      |       21 |        0 |    100% |           |
@@ -13,8 +13,8 @@
 | zombie\_nomnom\_api/graphql\_app/dependencies.py |       27 |        3 |     89% |16, 24, 28 |
 | zombie\_nomnom\_api/graphql\_app/resolvers.py    |       93 |        2 |     98% |  117, 119 |
 | zombie\_nomnom\_api/graphql\_app/schema.py       |       50 |        0 |    100% |           |
-| zombie\_nomnom\_api/server.py                    |       12 |        2 |     83% |       7-8 |
-|                                        **TOTAL** |  **234** |   **29** | **88%** |           |
+| zombie\_nomnom\_api/server.py                    |       15 |        2 |     87% |      9-10 |
+|                                        **TOTAL** |  **244** |   **29** | **88%** |           |
 
 
 ## Setup coverage badge
