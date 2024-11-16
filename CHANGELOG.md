@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.0.0](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/tree/1.0.0) (2024-11-16)
+
+[Full Changelog](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/compare/0.3.0...1.0.0)
+
+**Closed issues:**
+
+- \[FEAT\] Add version route to api [\#42](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/42)
+- \[DOC\] Update description on  pyproject.toml to not have reference to react app. [\#37](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/37)
+- \[INFRA\] Create YTT files and deploy to k8s cluster [\#28](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/28)
+- \[DOC\] Update README.md with GraphQL queries we support and how to use the api [\#20](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/20)
+- \[FEAT\] Add ability to setup CORS reponse and default to \* [\#18](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/18)
+- \[INFRA\] Have the tests and docs runs in seperate workflows using artifacts. [\#13](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/13)
+
+**Merged pull requests:**
+
+- feat\(api\): Add version endpoint [\#47](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/47) ([gxldCptRick](https://github.com/gxldCptRick))
+- docs\(pypi\): Update Description to remove reference to react frontend. [\#46](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/46) ([gxldCptRick](https://github.com/gxldCptRick))
+- feat\(Configuration\): 18 feat add ability to setup cors reponse and default to [\#45](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/45) ([vCertxfiedGoat](https://github.com/vCertxfiedGoat))
+- build\(main\): Separate the docs and testing into unique jobs. [\#44](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/44) ([gxldCptRick](https://github.com/gxldCptRick))
+- docs\(Readme\): Readme now has graphql queries and outputs [\#36](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/36) ([vCertxfiedGoat](https://github.com/vCertxfiedGoat))
+- chore\(changelog\): Updating Changelog for version 0.3.0 [\#35](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/pull/35) ([github-actions[bot]](https://github.com/apps/github-actions))
+
 ## [0.3.0](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/tree/0.3.0) (2024-11-15)
 
 [Full Changelog](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/compare/0.2.2...0.3.0)
@@ -41,11 +63,9 @@
 
 - \[INFRA\] Create a docker image for the app [\#14](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/14)
 - \[FEAT\] add ui to mess with graphql endpoints  [\#9](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/9)
-- \[INFRA\] Update the CI/CD pipeline to update the version in the \_\_init\_\_.py file instead. [\#7](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/7)
 - \[FEAT\] Use GraphQL for main logical endpoints. [\#5](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/5)
 - \[FEAT\] Create routes to play the game and do actions on it. [\#4](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/4)
 - \[FEAT\] Add routes to create an active game session. [\#3](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/3)
-- \[INFRA\] Package React app with python package [\#2](https://github.com/Carrera-Dev-Consulting/zombie-nomnom-api/issues/2)
 
 **Merged pull requests:**
 
