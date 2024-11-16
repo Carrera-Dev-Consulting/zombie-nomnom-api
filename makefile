@@ -1,19 +1,22 @@
 .PHONY: unit-test
 unit-test:
-	pytest tests/unit --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html
+	pytest tests/unit --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html --html=htmlcov/report.html
 .PHONY: int-test
 int-test:
-	pytest tests/integration --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html
+	pytest tests/integration --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html --html=htmlcov/report.html
 .PHONY: all-test
 all-test:
-	pytest tests --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html
+	pytest tests --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html --html=htmlcov/report.html
 .PHONY: docs
 docs:
 	pdoc ./zombie_nomnom_api
+.PHONY: build-pdocs
+build-pdocs:
+	pdoc ./zombie_nomnom_api -o ./docs
 .PHONY: build-docs
 build-docs:
 	make cov-all
-	pdoc ./zombie_nomnom_api -o ./docs
+	make build-pdocs
 .PHONY: serve-docs
 serve-docs:
 	python -m http.server -d docs 8080
