@@ -22,3 +22,4 @@ def test_version__when_requesting_version__returns_object_with_version_field(
     response: httpx.Request = api_client.get("/version")
     value = json.loads(response.content)
     assert "version" in value
+    assert value["version"]
