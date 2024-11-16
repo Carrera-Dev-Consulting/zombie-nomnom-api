@@ -13,8 +13,8 @@
 | zombie\_nomnom\_api/graphql\_app/dependencies.py |       27 |        3 |     89% |16, 24, 28 |
 | zombie\_nomnom\_api/graphql\_app/resolvers.py    |       93 |        2 |     98% |  117, 119 |
 | zombie\_nomnom\_api/graphql\_app/schema.py       |       50 |        0 |    100% |           |
-| zombie\_nomnom\_api/server.py                    |       15 |        2 |     87% |      9-10 |
-|                                        **TOTAL** |  **244** |   **29** | **88%** |           |
+| zombie\_nomnom\_api/server.py                    |       18 |        2 |     89% |      9-10 |
+|                                        **TOTAL** |  **247** |   **29** | **88%** |           |
 
 
 ## Setup coverage badge
