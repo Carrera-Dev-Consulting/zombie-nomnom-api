@@ -12,16 +12,8 @@ permissions:
 
 jobs:
   # Build the documentation and upload the static HTML files as an artifact.
-  build:
+  build-pdoc:
     runs-on: ubuntu-latest
-    permissions:
-      # Gives the action the necessary permissions for publishing new
-      # comments in pull requests.
-      pull-requests: write
-      # Gives the action the necessary permissions for pushing data to the
-      # python-coverage-comment-action branch, and for editing existing
-      # comments (to avoid publishing multiple comments in the same PR)
-      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -29,13 +21,39 @@ jobs:
           python-version: "3.10"
 
       # ADJUST THIS: install all dependencies (including pdoc)
-      - run: pip install .
-      - run: pip install -r requirements-dev.txt
-      - run: make build-docs
-      - uses: actions/upload-pages-artifact@v3
+      - name: Install dependencies
+        run: pip install .
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Build pdocs
+        run: make build-pdocs
+      - name: Upload pdoc artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: docs/
+          name: pdoc-docs
+          path: docs
 
+  test-with-coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: pip install .
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run all tests
+        run: make all-test
+      - name: Upload coverage report html
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov
       # Code Coverage Comment
       - name: Coverage comment
         id: coverage_comment
@@ -52,10 +70,32 @@ jobs:
           # If you use a different name, update COMMENT_FILENAME accordingly
           path: python-coverage-comment-action.txt
 
+  upload-pages-artifact:
+    needs:
+      - build-pdoc
+      - test-with-coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pdoc-docs
+          path: pdoc-docs
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+      - name: Create Docs Package Dir
+        run: |
+          mv pdoc-docs docs
+          mv coverage-report docs/coverage
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
   # Deploy the artifact to GitHub pages.
   # This is a separate job so that only actions/deploy-pages has the necessary permissions.
   deploy:
-    needs: build
+    needs: upload-pages-artifact
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -85,4 +125,3 @@ jobs:
           prerelease: true
           generateReleaseNotes: true
           tag: ${{ steps.version.outputs.version }}
-          body: ${{ steps.changelog.outputs.changelog }}
