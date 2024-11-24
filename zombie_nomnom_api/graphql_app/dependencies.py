@@ -1,7 +1,8 @@
 from functools import cache
 from typing import Any
 
-from zombie_nomnom_api.game import GameMaker
+from zombie_nomnom_api import configs
+from zombie_nomnom_api.game import GameMaker, MongoGameMaker
 from zombie_nomnom.engine import DrawDice, Score
 
 
@@ -32,6 +33,9 @@ class DIContainer:
 def bootstrap() -> DIContainer:
     container = DIContainer()
     container[GameMaker] = GameMaker()
+    container[MongoGameMaker] = MongoGameMaker(
+        configs.mongo_client(), configs.game_collection()
+    )
     container[DrawDice] = DrawDice()
     container[Score] = Score()
     return container
