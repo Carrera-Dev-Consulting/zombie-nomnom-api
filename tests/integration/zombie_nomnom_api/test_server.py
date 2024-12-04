@@ -25,10 +25,3 @@ def test_version__when_requesting_version__returns_object_with_version_field(
     value = json.loads(response.content)
     assert "version" in value
     assert value["version"]
-
-
-@pytest.mark.asyncio
-async def test_mongo_communication():
-    sut = configs.mongo_client()
-
-    await sut[configs.game_collection].find_one({})

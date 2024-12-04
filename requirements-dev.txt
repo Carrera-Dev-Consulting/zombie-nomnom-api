@@ -3,5 +3,6 @@ pytest
 pytest-cov
 pytest-mock
 pytest-html
+pytest-asyncio
 pdoc
 httpx

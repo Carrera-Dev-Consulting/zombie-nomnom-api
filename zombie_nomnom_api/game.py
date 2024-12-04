@@ -1,8 +1,12 @@
+from enum import Enum
 import uuid
+
+from pydantic_settings import BaseSettings
+from pymongo.collection import Collection
+from pymongo import MongoClient
+
 from zombie_nomnom import ZombieDieGame
 from zombie_nomnom.engine.serialization import format_to_json_dict, parse_game_json_dict
-
-from zombie_nomnom_api.db.client import MongoClient
 
 
 class Game:
@@ -45,9 +49,11 @@ class GameMaker:
 
 
 class MongoGameMaker:
-    def __init__(self, mongo_client: MongoClient, game_collection) -> None:
+    def __init__(self, mongo_client: MongoClient, game_collection_name) -> None:
         self.mongo_client = mongo_client
-        self.game_collection = game_collection
+        self.game_collection: Collection = mongo_client.get_database().get_collection(
+            game_collection_name
+        )
 
     def make_game(self, players: list[str]) -> Game:
         game = Game(game=ZombieDieGame(players))
@@ -69,3 +75,35 @@ class MongoGameMaker:
 
     def __iter__(self):
         return iter(self.get_all_games())
+
+
+class MongoGameMakerConfig(BaseSettings):
+    """Environment Config settings for MongoGameMakers to allow us to not have to
+    need mongo connection details unless we are loading the mongo engine.
+    """
+
+    mongo_connection: str = "mongodb://localhost:27017/zombie_nomnom"
+    """
+    Full mongo connection string uri ex. mongodb://localhost:27017/zombie_nomnom
+    """
+    game_collection_name: str = "games"
+    """
+    Name of the collection where we store game data.
+    """
+
+
+class GameMakerType(str, Enum):
+    memory = "memory"
+    mongo = "mongo"
+
+
+def create_maker(kind: GameMakerType) -> GameMaker:
+    if kind == GameMakerType.mongo:
+        config = MongoGameMakerConfig()
+        return MongoGameMaker(
+            game_collection_name=config.game_collection_name,
+            mongo_client=MongoClient(config.mongo_connection),
+        )
+    elif kind == GameMakerType.memory:
+        return GameMaker()
+    raise ValueError(f"Invalid game maker type: {kind}")
