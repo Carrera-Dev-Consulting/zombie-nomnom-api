@@ -33,7 +33,7 @@ classifiers = [
 keywords = ["game", "api", "dice"]
 
 dependencies = [
-    "zombie-nomnom >= 1.1.0",
+    "zombie-nomnom >= 1.1.1",
     "click >= 8.1.7",
     "fastapi >= 0.115.0",
     "uvicorn >= 0.31.1",
