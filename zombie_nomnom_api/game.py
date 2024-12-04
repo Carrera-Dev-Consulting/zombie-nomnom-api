@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Protocol
 import uuid
 
 from pydantic_settings import BaseSettings
@@ -30,6 +31,18 @@ class Game:
             "id": self.id,
             "game": format_to_json_dict(self.game),
         }
+
+
+class GameMakerInterface(Protocol):
+    """
+    Defines the methods that are used by game makers to create and load games currently.
+    """
+
+    def make_game(self, players: list[str]) -> Game: ...
+
+    def __getitem__(self, key: str) -> Game: ...
+
+    def __iter__(self): ...
 
 
 class GameMaker:
@@ -97,7 +110,7 @@ class GameMakerType(str, Enum):
     mongo = "mongo"
 
 
-def create_maker(kind: GameMakerType) -> GameMaker:
+def create_maker(kind: GameMakerType) -> GameMakerInterface:
     if kind == GameMakerType.mongo:
         config = MongoGameMakerConfig()
         return MongoGameMaker(

@@ -1,6 +1,6 @@
 from zombie_nomnom import Command, Die, DieBag, DieColor, Face, Player, RoundState
 from zombie_nomnom.engine import DrawDice, Score
-from zombie_nomnom_api.game import Game, GameMaker
+from zombie_nomnom_api.game import Game, GameMakerInterface
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
 from .schema import (
     Query,
@@ -17,7 +17,7 @@ from .dependencies import bootstrap
 
 @Query.field("games")
 def games_resolver(_, __, id: str = None, dependencies: DIContainer = bootstrap()):
-    maker: GameMaker = dependencies[GameMaker]
+    maker: GameMakerInterface = dependencies[GameMakerInterface]
     if id is not None:
         value = maker[id]
         return [value] if value else []
@@ -30,7 +30,7 @@ def create_game_resolver(
 ):
     if len(players) == 0:
         return {"errors": ["No players provided"], "game": None}
-    maker: GameMaker = dependencies[GameMaker]
+    maker: GameMakerInterface = dependencies[GameMakerInterface]
     game = maker.make_game(players)
     return {"errors": [], "game": game}
 
@@ -40,7 +40,7 @@ def draw_dice_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap
 
     if gameId is None:
         return {"errors": ["No game id provided"], "round": None}
-    maker: GameMaker = dependencies[GameMaker]
+    maker: GameMakerInterface = dependencies[GameMakerInterface]
     dice: DrawDice = dependencies[DrawDice]
     gameInstance: Game = maker[gameId]
     if gameInstance is None:
@@ -52,7 +52,7 @@ def draw_dice_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap
 def end_round_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap()):
     if gameId is None:
         return {"errors": ["No game id provided"], "round": None}
-    maker: GameMaker = dependencies[GameMaker]
+    maker: GameMakerInterface = dependencies[GameMakerInterface]
     score: Score = dependencies[Score]
     gameInstance: Game = maker[gameId]
     if gameInstance is None:
