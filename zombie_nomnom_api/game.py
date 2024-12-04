@@ -21,6 +21,7 @@ class Game:
     def __eq__(self, value: object) -> bool:
         return isinstance(value, Game) and self.id == value.id
 
+    @classmethod
     def from_dict(cls, game_data: dict) -> "Game":
         id = game_data.pop("id", None)
         game = parse_game_json_dict(game_data["game"])
@@ -74,8 +75,11 @@ class MongoGameMaker:
         self.game_collection.insert_one(game.to_dict())
         return game
 
-    def load_game(self, game_id: str) -> Game:
+    def load_game(self, game_id: str) -> Game | None:
         game_data = self.game_collection.find_one({"id": game_id})
+        if game_data is None:
+            return None
+
         game = Game.from_dict(game_data)
         return game
 
@@ -107,11 +111,26 @@ class MongoGameMakerConfig(BaseSettings):
 
 
 class GameMakerType(str, Enum):
+    """
+    Enum for the supported types of game makers we have implemented.
+    """
+
     memory = "memory"
     mongo = "mongo"
 
 
 def create_maker(kind: GameMakerType) -> GameMakerInterface:
+    """Translates the game maker type to the implementation of the GameMakerInterface
+
+    **Parameters**
+    - kind (GameMakerType): The kind of game maker we want.
+
+    **Raises**
+    - ValueError: Given a GameMakerType that we do not have mapped.
+
+    **Returns**
+    - GameMakerInterface: GameMaker implementation
+    """
     if kind == GameMakerType.mongo:
         config = MongoGameMakerConfig()
         return MongoGameMaker(
