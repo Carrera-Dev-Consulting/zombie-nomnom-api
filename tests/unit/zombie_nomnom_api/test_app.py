@@ -38,3 +38,14 @@ def test_hostname_parameter__when_given_an_invalid_hostname_string_spaces__raise
 
     with pytest.raises(click.BadParameter):
         param.convert(hostname, None, None)
+
+
+def test_hostname_parameter__when_given_an_object__turns_into_string_and_validates_string():
+    param = HostnameParameter()
+
+    class SomeClass:
+        def __str__(self):
+            return "localhost"
+
+    value = param.convert(SomeClass(), None, None)
+    assert value == "localhost"
