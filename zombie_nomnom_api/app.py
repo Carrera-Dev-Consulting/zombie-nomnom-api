@@ -22,7 +22,10 @@ class HostnameParameter(click.ParamType):
     )
 
     def convert(
-        self, value: Any, param: click.Parameter | None, ctx: click.Context | None
+        self,
+        value: Any,
+        param: click.Parameter | None,
+        ctx: click.Context | None,
     ) -> Any:
         if not isinstance(value, str):
             value = str(value)
@@ -35,5 +38,5 @@ class HostnameParameter(click.ParamType):
 @click.option("--port", "-p", type=int, default=5000)
 @click.option("--host", "-h", type=HostnameParameter(), default="localhost")
 @click.option("--worker-count", "-w", type=int, default=1)
-def main(port: int, host: str, worker_count: int):
+def main(port: int, host: str, worker_count: int):  # pragma: no cover
     uvicorn.run(fastapi_app, port=port, host=host, workers=worker_count)
