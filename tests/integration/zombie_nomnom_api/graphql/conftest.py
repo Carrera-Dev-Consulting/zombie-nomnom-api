@@ -1,6 +1,6 @@
 import pytest
 
-from zombie_nomnom_api.game import GameMaker, GameMakerInterface
+from zombie_nomnom_api.game import InMemoryGameMaker, GameMakerInterface
 from zombie_nomnom_api.graphql_app.dependencies import bootstrap
 
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 import uuid
 
 from pydantic_settings import BaseSettings
@@ -33,6 +33,7 @@ class Game:
         }
 
 
+@runtime_checkable
 class GameMakerInterface(Protocol):
     """
     Defines the methods that are used by game makers to create and load games currently.
@@ -45,7 +46,7 @@ class GameMakerInterface(Protocol):
     def __iter__(self): ...
 
 
-class GameMaker:
+class InMemoryGameMaker:
     def __init__(self) -> None:
         self.session = {}
 
@@ -118,5 +119,5 @@ def create_maker(kind: GameMakerType) -> GameMakerInterface:
             mongo_client=MongoClient(config.mongo_connection),
         )
     elif kind == GameMakerType.memory:
-        return GameMaker()
+        return InMemoryGameMaker()
     raise ValueError(f"Invalid game maker type: {kind}")

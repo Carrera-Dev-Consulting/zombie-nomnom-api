@@ -1,8 +1,8 @@
 from zombie_nomnom import Die, DieBag, Face, ZombieDieGame
-from zombie_nomnom_api.game import Game, GameMaker
+from zombie_nomnom_api.game import Game, InMemoryGameMaker
 
 
-class FakeGameMaker(GameMaker):
+class FakeGameMaker(InMemoryGameMaker):
 
     def make_game(self, players: list[str]) -> Game:
         game = Game(game=ZombieDieGame(players, bag_function=self.winning_bag))

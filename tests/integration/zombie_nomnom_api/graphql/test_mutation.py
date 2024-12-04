@@ -1,6 +1,6 @@
 from tests.integration.zombie_nomnom_api.graphql.util import query_api
 from tests.utils import FakeGameMaker
-from zombie_nomnom_api.game import GameMaker, GameMakerInterface
+from zombie_nomnom_api.game import InMemoryGameMaker, GameMakerInterface
 from zombie_nomnom.engine import DrawDice
 
 
@@ -46,7 +46,7 @@ def test_mutation_create_game__when_making_a_game__creates_a_game_with_maker(
 
 def test_mutation_draw_dice_with_a_fresh_game(di_container, api_client):
     di_container[GameMakerInterface] = FakeGameMaker()
-    maker: GameMaker = di_container[GameMakerInterface]
+    maker: InMemoryGameMaker = di_container[GameMakerInterface]
     existing_game = maker.make_game(["player1"])
     original_hand = existing_game.game.round.player.hand
     original_bag_size = len(existing_game.game.round.bag)
