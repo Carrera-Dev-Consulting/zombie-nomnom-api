@@ -7,6 +7,9 @@ int-test:
 .PHONY: all-test
 all-test:
 	pytest tests --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html --html=htmlcov/report.html
+.PHONY: db-test
+db-test:
+	pytest tests -m mongo --cov=zombie_nomnom_api --cov-report=term --cov-report=xml --cov-report=html --html=htmlcov/report.html
 .PHONY: docs
 docs:
 	pdoc ./zombie_nomnom_api
@@ -32,6 +35,12 @@ format:
 .PHONY: install
 install:
 	pip install . -r requirements-dev.txt
+.PHONY: lint
+lint:
+	black . --check
 .PHONY: package
 package:
 	ytt -f deployment/lib/schema.yaml -f deployment/envs/${ENVIRONMENT}/values.yaml -f deployment/deployment.yaml -f deployment/ingress.yaml -f deployment/namespace.yaml -f deployment/service.yaml > zombie-nomnom-api-${ENVIRONMENT}.yaml
+.PHONY: ensure-resources
+ensure-resources:
+	docker compose up mongo -d || echo "Mongo is already running"

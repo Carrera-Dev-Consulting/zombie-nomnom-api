@@ -22,11 +22,19 @@ jobs:
 
       # ADJUST THIS: install all dependencies (including pdoc)
       - name: Install dependencies
-        run: pip install .
-      - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        shell: bash
+        run: |
+          pip install .
+          pip install -r requirements-dev.txt
+      - name: Lint Source
+        shell: bash
+        run: |
+          make lint
       - name: Build pdocs
-        run: make build-pdocs
+        shell: bash
+        run: |
+          make ensure-resources
+          make build-pdocs
       - name: Upload pdoc artifact
         uses: actions/upload-artifact@v4
         with:

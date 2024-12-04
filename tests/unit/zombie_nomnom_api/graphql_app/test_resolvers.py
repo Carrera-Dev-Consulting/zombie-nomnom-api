@@ -1,7 +1,7 @@
 import pytest
 from zombie_nomnom import Die, DieBag, DieColor, Face, ZombieDieGame
 from tests.utils import FakeGameMaker
-from zombie_nomnom_api.game import Game, GameMaker
+from zombie_nomnom_api.game import Game, InMemoryGameMaker, GameMakerInterface
 from zombie_nomnom.engine import DrawDice, Score
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
 from zombie_nomnom_api.graphql_app.resolvers import (
@@ -22,14 +22,14 @@ def di_container() -> DIContainer:
 
 @pytest.fixture
 def game_maker():
-    return GameMaker()
+    return InMemoryGameMaker()
 
 
 def test_end_round_resolver_when_game_does_not_exist_returns_error(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     gameId = None
     round = end_round_resolver(None, None, gameId=gameId, dependencies=di_container)
     assert len(round["errors"]) == 1
@@ -38,9 +38,9 @@ def test_end_round_resolver_when_game_does_not_exist_returns_error(
 
 def test_end_round_resolver_when_game_is_not_found_returns_error(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     gameId = "None"
     round = end_round_resolver(None, None, gameId=gameId, dependencies=di_container)
     assert len(round["errors"]) == 1
@@ -48,8 +48,8 @@ def test_end_round_resolver_when_game_is_not_found_returns_error(
 
 
 def test_end_round_resolver_ends_round_and_scores_the_user(di_container: DIContainer):
-    di_container[GameMaker] = FakeGameMaker()
-    game_maker: GameMaker = di_container[GameMaker]
+    di_container[GameMakerInterface] = FakeGameMaker()
+    game_maker: InMemoryGameMaker = di_container[GameMakerInterface]
     game = game_maker.make_game(["player1"])
 
     draw_dice_resolver(None, None, gameId=game.id, dependencies=di_container)
@@ -64,8 +64,8 @@ def test_end_round_resolver_ends_round_and_scores_the_user(di_container: DIConta
 def test_draw_dice_resolver_draws_new_hand_when_draw_is_called(
     di_container: DIContainer,
 ):
-    di_container[GameMaker] = FakeGameMaker()
-    game_maker: GameMaker = di_container[GameMaker]
+    di_container[GameMakerInterface] = FakeGameMaker()
+    game_maker: GameMakerInterface = di_container[GameMakerInterface]
 
     game = game_maker.make_game(["player1"])
     round = draw_dice_resolver(None, None, gameId=game.id, dependencies=di_container)
@@ -76,9 +76,9 @@ def test_draw_dice_resolver_draws_new_hand_when_draw_is_called(
 
 def test_draw_dice_resolver_when_game_does_not_exist_returns_error(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     gameId = None
     round = draw_dice_resolver(None, None, gameId=gameId, dependencies=di_container)
     assert len(round["errors"]) == 1
@@ -87,9 +87,9 @@ def test_draw_dice_resolver_when_game_does_not_exist_returns_error(
 
 def test_draw_dice_resolver_when_game_is_not_found_returns_error(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     gameId = "None"
     round = draw_dice_resolver(None, None, gameId=gameId, dependencies=di_container)
     assert len(round["errors"]) == 1
@@ -98,9 +98,9 @@ def test_draw_dice_resolver_when_game_is_not_found_returns_error(
 
 def test_games_resolver__when_given_an_id_and_game_exists__returns_list_with_game(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     game = game_maker.make_game(["player1", "player2"])
     games = games_resolver(None, None, id=game.id, dependencies=di_container)
     assert len(games) == 1
@@ -109,9 +109,9 @@ def test_games_resolver__when_given_an_id_and_game_exists__returns_list_with_gam
 
 def test_games_resolver__when_given_an_id_and_game_does_not_exist__returns_empty_list(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     games = games_resolver(
         None, None, id="This game is on fire!!", dependencies=di_container
     )
@@ -120,9 +120,9 @@ def test_games_resolver__when_given_an_id_and_game_does_not_exist__returns_empty
 
 def test_games_resolver__when_not_given_an_id__returns_all_games(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     game_maker.make_game(["player1", "player2"])
     game_maker.make_game(["player3", "player4"])
 
@@ -132,9 +132,9 @@ def test_games_resolver__when_not_given_an_id__returns_all_games(
 
 def test_create_game_resolver__when_no_players_provided__returns_error(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     response = create_game_resolver(None, None, players=[], dependencies=di_container)
 
     assert response["errors"]
@@ -145,9 +145,9 @@ def test_create_game_resolver__when_no_players_provided__returns_error(
 
 def test_create_game_resolver__when_players_provided__returns_new_game_instance(
     di_container: DIContainer,
-    game_maker: GameMaker,
+    game_maker: InMemoryGameMaker,
 ):
-    di_container[GameMaker] = game_maker
+    di_container[GameMakerInterface] = game_maker
     response = create_game_resolver(
         None, None, players=["Player One"], dependencies=di_container
     )

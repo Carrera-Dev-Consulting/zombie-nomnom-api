@@ -1,6 +1,8 @@
 import json
-from fastapi.testclient import TestClient
 import httpx
+import pytest
+from fastapi.testclient import TestClient
+from zombie_nomnom_api import configs
 
 
 def test_api__when_requesting_health_check__returns_ok(api_client: TestClient):

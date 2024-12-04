@@ -4,8 +4,9 @@
    :end-before: Contribution
 """
 
-from pydantic_settings import BaseSettings
 import logging
+from pydantic_settings import BaseSettings
+from zombie_nomnom_api.game import GameMakerType
 
 
 class Configs(BaseSettings):
@@ -14,6 +15,7 @@ class Configs(BaseSettings):
     cors_origins: set[str] = ["*"]
     cors_allow_credentials: bool = True
     log_level: str = "DEBUG"
+    game_maker_type: GameMakerType = GameMakerType.memory
 
 
 configs = Configs()

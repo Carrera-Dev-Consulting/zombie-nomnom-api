@@ -1,6 +1,6 @@
 import pytest
 
-from zombie_nomnom_api.game import GameMaker
+from zombie_nomnom_api.game import InMemoryGameMaker, GameMakerInterface
 from zombie_nomnom_api.graphql_app.dependencies import bootstrap
 
 
@@ -11,7 +11,7 @@ def di_container():
 
 @pytest.fixture(autouse=True)
 def clean_games(di_container):
-    maker: GameMaker = di_container[GameMaker]
+    maker: GameMakerInterface = di_container[GameMakerInterface]
     maker.session.clear()
 
     yield

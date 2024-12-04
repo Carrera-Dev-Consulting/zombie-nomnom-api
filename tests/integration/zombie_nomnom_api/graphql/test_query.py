@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from zombie_nomnom import Command, Die, Face, RoundState
 from zombie_nomnom.engine import DrawDice, Score
 
-from zombie_nomnom_api.game import GameMaker
+from zombie_nomnom_api.game import GameMakerInterface
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
 
 from tests.integration.zombie_nomnom_api.graphql.util import query_api
@@ -28,7 +28,7 @@ def test_query_games__when_queried__returns_games_as_expected(
     di_container: DIContainer,
     api_client: TestClient,
 ):
-    maker: GameMaker = di_container[GameMaker]
+    maker: GameMakerInterface = di_container[GameMakerInterface]
     existing_game = maker.make_game(["player1", "player2"])
     existing_game.game.process_command(DrawDice(3))
     existing_game.game.process_command(Win())

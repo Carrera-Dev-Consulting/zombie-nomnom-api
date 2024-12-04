@@ -92,6 +92,50 @@ To run the service locally you simply need to run the module directly with pytho
     > python -m zombie_nomnom_api
 ```
 
+To run the unit tests locally you can use the `unit-test` make target like:
+
+```bash
+    > make unit-test
+```
+
+To run the integration tests locally you can use the `int-test` make target but please run `ensure-resources` before which will require docker to have been installed and or install and run mongo using the default port with no username or password.
+
+
+```bash
+# If not running mongo already please use the docker config we provided in the compose file
+    > make ensure-resources
+# actually running the tests
+    > make int-test
+```
+
+The same also applies for all-test since this will run both the integration tests as well as unit tests.
+Use the `all-test` make target.
+
+```bash
+# If not running mongo locally already run this
+    > make ensure-resources
+# actually running the tests
+    > make all-test
+```
+
+Running tests that relate to databases which currently is only mongo will be run with `db-test` make target. This is useful when you mark your tests properly with the `pytest.mark.mongo` so that you can disitinguish a test that uses mongo components with it.
+
+```bash
+# If not running mongo locally already run this
+    > make ensure-resources
+# actually running tests
+    > make db-test
+```
+
+All these test configs are configured to also output coverage results to help you see how many lines you are covering with three reports: terminal, xml, html
+
+To view the xml you can configure most any tool in vscode to read the file but I use `coverage gutters` to be able to display it visually when I am inspecting the src files.
+
+To view the html, you can run the `render-cov` make target to spin up a simple http server built into python to inspect and view the `htmlcov` folder html and render it properly in your browser at `8081`. This is super useful when you want to really investigate and key into areas that are not covered.
+
+To view the terminal output, you will just be shown it immediately after you run the make commands in the terminal so you can enjoy it!!
+
+
 GraphQL Usage
 ---
 

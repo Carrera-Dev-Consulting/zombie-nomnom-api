@@ -33,12 +33,13 @@ classifiers = [
 keywords = ["game", "api", "dice"]
 
 dependencies = [
-    "zombie-nomnom >= 0.3.0",
+    "zombie-nomnom >= 1.1.1",
     "click >= 8.1.7",
     "fastapi >= 0.115.0",
     "uvicorn >= 0.31.1",
     "ariadne >= 0.23.0",
-    "pydantic-settings >= 2.6.1"
+    "pydantic-settings >= 2.6.1",
+    "pymongo >= 4.10.1",
 ]
 
 [project.urls]
@@ -52,5 +53,5 @@ Changelog = "https://github.com/carrera-dev-consulting/zombie-nomnom-api/release
 zombie-nomnom-api = "zombie_nomnom_api.app:main"
 
 [tool.pdm]
-version = { source = "scm", tag_regex = "^(\\d+\\.){2}\\d+$"}
+version = { source = "scm", tag_regex = "^(\\d+\\.){2}\\d+$" }
 distribution = true
