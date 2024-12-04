@@ -2,8 +2,10 @@ from functools import cache
 from typing import Any
 
 from zombie_nomnom_api import configs
-from zombie_nomnom_api.game import InMemoryGameMaker, GameMakerInterface, create_maker
+from zombie_nomnom_api.game import GameMakerInterface, create_maker
 from zombie_nomnom.engine import DrawDice, Score
+
+_unset = object()
 
 
 class DIContainer:
@@ -11,10 +13,9 @@ class DIContainer:
         self._dependencies = {}
 
     def __getitem__(self, key: Any) -> Any:
-        value = self._dependencies[str(key)]
-        if isinstance(value, type):
-            # TODO(Milo): Handle dependency injection for anything the constructor needs.
-            value = self._dependencies[str(key)] = value()
+        value = self.get(key, _unset)
+        if value is _unset:
+            raise KeyError(key)
         return value
 
     def __setitem__(self, key: Any, value: Any) -> None:
@@ -26,7 +27,11 @@ class DIContainer:
         self._dependencies[str(key)] = value or key
 
     def get(self, key: Any, default: Any = None) -> Any:
-        return self._dependencies.get(str(key), default)
+        value = self._dependencies.get(str(key), default)
+        if isinstance(value, type):
+            # TODO(Milo): Handle dependency injection for anything the constructor needs.
+            value = self._dependencies[str(key)] = value()
+        return value
 
 
 @cache
