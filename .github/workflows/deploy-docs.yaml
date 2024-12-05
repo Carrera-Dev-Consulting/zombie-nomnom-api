@@ -26,10 +26,6 @@ jobs:
         run: |
           pip install .
           pip install -r requirements-dev.txt
-      - name: Lint Source
-        shell: bash
-        run: |
-          make lint
       - name: Build pdocs
         shell: bash
         run: |
@@ -52,11 +48,17 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install dependencies
-        run: pip install .
-      - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
+        run: |
+          pip install .
+          pip install -r requirements-dev.txt
+      - name: Lint Source
+        shell: bash
+        run: |
+          make lint
       - name: Run all tests
-        run: make all-test
+        run: |
+          make ensure-resources
+          make all-test
       - name: Upload coverage report html
         uses: actions/upload-artifact@v4
         with:
