@@ -25,3 +25,9 @@ def test_version__when_requesting_version__returns_object_with_version_field(
     value = json.loads(response.content)
     assert "version" in value
     assert value["version"]
+
+
+def test_me_when_requesting_me__returns_user(api_client: TestClient):
+    response: httpx.Request = api_client.get("/me")
+    assert response.status_code == 200
+    value = json.loads(response.content)

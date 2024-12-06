@@ -1,13 +1,15 @@
 from functools import cache
 from fastapi.security import HTTPBearer
 import jwt
+from jwt.exceptions import PyJWKClientError, DecodeError
 from zombie_nomnom_api import configs
-from zombie_nomnom_api.rest_app.custom_exceptions import (
-    UnauthenticatedException,
-    UnauthorizedException,
-)
+
 
 token_auth_scheme = HTTPBearer()
+
+
+def create_error_json(message: str) -> dict[str, str]:
+    return {"status": "error", "message": message}
 
 
 class VerifyToken:
@@ -25,14 +27,14 @@ class VerifyToken:
         jwks_url = f"https://{self.config.oauth_domain}/.well-known/jwks.json"
         self.jwks_client = jwt.PyJWKClient(jwks_url)
 
-    def verify(self, token: str, permissions=None, scopes=None):
+    def verify(self, token: str, permissions: list = None, scopes: list | str = None):
         # This gets the 'kid' from the passed token
         try:
             signing_key = self.jwks_client.get_signing_key_from_jwt(token).key
-        except jwt.exceptions.PyJWKClientError as error:
-            return {"status": "error", "msg": error.__str__()}
-        except jwt.exceptions.DecodeError as error:
-            return {"status": "error", "msg": error.__str__()}
+        except PyJWKClientError as error:
+            return create_error_json(str(error))
+        except DecodeError as error:
+            return create_error_json(str(error))
 
         try:
             payload = jwt.decode(
@@ -46,33 +48,39 @@ class VerifyToken:
             return {"status": "error", "message": str(e)}
 
         if scopes:
-            result = self._check_claims(payload, "scope", str, scopes.split(" "))
-            if result.get("error"):
+            result = self._check_claims(
+                payload,
+                "scope",
+                str,
+                scopes if isinstance(scopes, list) else scopes.split(" "),
+            )
+            if result.get("status") == "error":
                 return result
 
         if permissions:
             result = self._check_claims(payload, "permissions", list, permissions)
-            if result.get("error"):
+            if result.get("status") == "error":
                 return result
 
         return payload
 
-    def _check_claims(self, payload, claim_name, claim_type, expected_value):
+    def _check_claims(
+        self, payload: dict, claim_name: str, claim_type: type, expected_value: list
+    ):
 
-        instance_check = isinstance(payload[claim_name], claim_type)
+        payload_claim = payload.get(claim_name)
+        if payload_claim is None or not isinstance(payload[claim_name], claim_type):
+            return create_error_json(
+                f"User does not have the required '{claim_name}' claim."
+            )
         result = {"status": "success", "status_code": 200}
 
-        payload_claim = payload[claim_name]
-
-        if claim_name not in payload or not instance_check:
-            raise UnauthenticatedException
-
         if claim_name == "scope":
-            payload_claim = payload[claim_name].split(" ")
+            payload_claim = payload_claim.split(" ")
 
         for value in expected_value:
             if value not in payload_claim:
-                raise UnauthorizedException(
+                return create_error_json(
                     f"User does not have the required '{claim_name}' claim."
                 )
         return result

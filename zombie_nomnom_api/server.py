@@ -14,7 +14,7 @@ from zombie_nomnom_api.rest_app.authentication import (
 
 try:
     _version = version("zombie-nomnom-api")
-except:
+except:  # pragma: no cover
     _version = "dev"
 
 fastapi_app = FastAPI(
@@ -32,7 +32,7 @@ fastapi_app.add_middleware(
 
 
 @fastapi_app.middleware("http")
-async def parse_token(
+async def hydrate_user(
     request: Request,
     call_next,
 ):
@@ -63,9 +63,8 @@ def version():
     return {"version": _version}
 
 
-@fastapi_app.get("/user")
-def get_current_user(request: Request):
-
+@fastapi_app.get("/me")
+def get_me(request: Request):
     return getattr(request.state, "user", None)
 
 

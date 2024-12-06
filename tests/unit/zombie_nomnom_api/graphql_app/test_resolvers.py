@@ -5,6 +5,7 @@ from zombie_nomnom_api.game import Game, InMemoryGameMaker, GameMakerInterface
 from zombie_nomnom.engine import DrawDice, Score
 from zombie_nomnom_api.graphql_app.dependencies import DIContainer
 from zombie_nomnom_api.graphql_app.resolvers import (
+    die_color_resolver,
     games_resolver,
     create_game_resolver,
     draw_dice_resolver,
@@ -156,3 +157,18 @@ def test_create_game_resolver__when_players_provided__returns_new_game_instance(
     assert response["game"]
 
     assert len(list(game_maker)) == 1
+
+
+def test_die_color_resolver_returns_green_die_for_three_brains():
+    die = die_color_resolver(Die(faces=[Face.BRAIN] * 6), None)
+    assert die == DieColor.GREEN
+
+
+def test_die_color_resolver_returns_yellow_die_for_two_brains():
+    die = die_color_resolver(Die(faces=[Face.BRAIN] * 2 + [Face.FOOT] * 4), None)
+    assert die == DieColor.YELLOW
+
+
+def test_die_color_resolver_returns_red_die_for_one_brain():
+    die = die_color_resolver(Die(faces=[Face.BRAIN] + [Face.FOOT] * 5), None)
+    assert die == DieColor.RED

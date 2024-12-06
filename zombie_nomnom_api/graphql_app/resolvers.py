@@ -113,7 +113,7 @@ def die_sides_resolver(die: Die, _):
 def die_color_resolver(die: Die, _):
     brains = len([face for face in die.faces if face == Face.BRAIN])
     # this is a hack because the library does not provide a name directly.
-    if brains == 3:
+    if brains >= 3:
         return DieColor.GREEN
     elif brains == 2:
         return DieColor.YELLOW
