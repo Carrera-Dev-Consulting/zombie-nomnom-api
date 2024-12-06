@@ -40,3 +40,7 @@ class HostnameParameter(click.ParamType):
 @click.option("--worker-count", "-w", type=int, default=1)
 def main(port: int, host: str, worker_count: int):  # pragma: no cover
     uvicorn.run(fastapi_app, port=port, host=host, workers=worker_count)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    main()
