@@ -16,10 +16,10 @@ class Configs(BaseSettings):
     cors_allow_credentials: bool = True
     log_level: str = "DEBUG"
     game_maker_type: GameMakerType = GameMakerType.memory
-    oauth_issuer: str
-    oauth_domain: str
-    oauth_algorithms: str
-    oauth_audience: str
+    oauth_issuer: str = ""
+    oauth_domain: str = ""
+    oauth_algorithms: str = ""
+    oauth_audience: str = ""
 
 
 configs = Configs()
