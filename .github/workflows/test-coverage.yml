@@ -33,12 +33,25 @@ jobs:
           pip install .
           pip install -r requirements-dev.txt
       - name: Lint Source Code
+        shell: bash
         run: |
           make lint
+      - name: Build Pdoc
+        shell: bash
+        run: |
+          make build-pdocs
       - name: Test with pytest
+        shell: bash
         run: |
           make ensure-resources # setup docker resources
           make all-test
+      - name: Upload Generated Content
+        uses: actions/upload-artifact@v4
+        with:
+          name: branch-docs
+          path: |
+            docs/
+            htmlcov/
       # Code Coverage Comment
       - name: Coverage comment
         id: coverage_comment
