@@ -30,10 +30,10 @@ token_auth_scheme = HTTPBearer()
 def create_error_json(message: str) -> dict[str, str]:
     """
     Create a standardized error response dictionary.
-    
+
     Args:
         message (str): The error message to include
-        
+
     Returns:
         dict[str, str]: Standardized error response with status and message
     """
@@ -43,20 +43,20 @@ def create_error_json(message: str) -> dict[str, str]:
 class VerifyToken:
     """
     JWT token verification class for OAuth-based authentication.
-    
+
     This class handles verification of JWT tokens issued by an OAuth provider.
     It validates token signatures, expiration, audience, and issuer claims,
     and can also verify custom scopes and permissions.
-    
+
     Attributes:
         config (zombie_nomnom_api.Configs): Configuration containing OAuth settings
         jwks_client (jwt.PyJWKClient): Client for retrieving JWT signing keys
     """
-    
+
     def __init__(self, configs=configs):
         """
         Initialize the token verifier with OAuth configuration.
-        
+
         Args:
             configs (zombie_nomnom_api.Configs): Configuration object containing
                 OAuth domain, algorithms, audience, and issuer settings
@@ -69,15 +69,15 @@ class VerifyToken:
     def verify(self, token: str, permissions: list = None, scopes: list | str = None):
         """
         Verify a JWT token and optionally check scopes and permissions.
-        
+
         This method validates the token signature, expiration, audience, and issuer.
         It can also verify that the token contains required scopes and permissions.
-        
+
         Args:
             token (str): The JWT token to verify
             permissions (list, optional): List of required permissions
             scopes (list | str, optional): Required scopes as list or space-separated string
-            
+
         Returns:
             dict: Either the decoded token payload or an error response
                  Error response format: {"status": "error", "message": "..."}
@@ -124,16 +124,16 @@ class VerifyToken:
     ):
         """
         Verify that the JWT payload contains required claims with expected values.
-        
+
         This internal method checks that a specific claim exists in the JWT payload,
         has the correct type, and contains all required values.
-        
+
         Args:
             payload (dict): The decoded JWT payload
             claim_name (str): Name of the claim to check (e.g., "scope", "permissions")
             claim_type (type): Expected type of the claim value
             expected_value (list): List of values that must be present in the claim
-            
+
         Returns:
             dict: Success response or error response
                  Success: {"status": "success", "status_code": 200}
@@ -161,11 +161,11 @@ class VerifyToken:
 def get_verifier() -> VerifyToken:
     """
     Get a cached instance of the token verifier.
-    
+
     This function provides a singleton instance of VerifyToken that is
     cached for the lifetime of the application to avoid recreating
     the JWKS client repeatedly.
-    
+
     Returns:
         VerifyToken: Cached token verifier instance
     """

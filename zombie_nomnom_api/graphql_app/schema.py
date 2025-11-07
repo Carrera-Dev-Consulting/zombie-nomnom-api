@@ -35,7 +35,7 @@ def register(graphql_type: TRegistry) -> TRegistry:
 
     Raises:
         AttributeError: If the type doesn't have a 'name' attribute
-        
+
     Example:
         >>> @register
         ... Query = ObjectType("Query")

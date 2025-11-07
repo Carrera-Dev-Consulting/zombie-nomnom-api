@@ -49,15 +49,15 @@ async def hydrate_user(
 ):
     """
     HTTP middleware to authenticate and hydrate user information from JWT tokens.
-    
+
     This middleware extracts JWT tokens from requests, verifies them using OAuth,
     and adds user information to the request state. If authentication fails,
     appropriate error responses are returned.
-    
+
     Args:
         request (Request): The incoming HTTP request
         call_next: The next middleware/handler in the chain
-        
+
     Returns:
         Response: Either the next handler's response or an authentication error
     """
@@ -82,7 +82,7 @@ async def hydrate_user(
 def healthz():
     """
     Health check endpoint to verify the API is running.
-    
+
     Returns:
         dict: Simple status object indicating the service is operational
     """
@@ -93,7 +93,7 @@ def healthz():
 def version():
     """
     Version information endpoint.
-    
+
     Returns:
         dict: Object containing the current API version
     """
@@ -104,13 +104,13 @@ def version():
 def get_me(request: Request):
     """
     User information endpoint that returns authenticated user details.
-    
+
     This endpoint returns the user information that was populated by the
     authentication middleware, or None if no user is authenticated.
-    
+
     Args:
         request (Request): The HTTP request containing user state
-        
+
     Returns:
         dict | None: User information or None if not authenticated
     """

@@ -32,17 +32,17 @@ from .dependencies import bootstrap
 def games_resolver(_, __, id: str = None, dependencies: DIContainer = bootstrap()):
     """
     Resolver for the 'games' query field.
-    
+
     Retrieves either all games or a specific game by ID. If an ID is provided,
     returns a single-item list containing that game (or empty list if not found).
     If no ID is provided, returns all games in the system.
-    
+
     Args:
         _ : GraphQL root object (unused)
         __ : GraphQL info object (unused)
         id (str, optional): Game ID to retrieve. If None, returns all games
         dependencies (DIContainer): Dependency injection container
-        
+
     Returns:
         list[Game]: List of games matching the criteria
     """
@@ -59,16 +59,16 @@ def create_game_resolver(
 ):
     """
     Resolver for the 'createGame' mutation.
-    
+
     Creates a new Zombie Dice game with the specified players. Validates that
     at least one player is provided before creating the game.
-    
+
     Args:
         _ : GraphQL root object (unused)
         __ : GraphQL info object (unused)
         players (list[str]): List of player names for the new game
         dependencies (DIContainer): Dependency injection container
-        
+
     Returns:
         dict: GameResult object with either the created game or error messages
     """
@@ -83,16 +83,16 @@ def create_game_resolver(
 def draw_dice_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap()):
     """
     Resolver for the 'drawDice' mutation.
-    
+
     Executes a dice draw command for the current player in the specified game.
     This draws dice from the bag into the player's hand for the current round.
-    
+
     Args:
         _ : GraphQL root object (unused)
         __ : GraphQL info object (unused)
         gameId (str): ID of the game to draw dice for
         dependencies (DIContainer): Dependency injection container
-        
+
     Returns:
         dict: RoundResult object with either the updated round state or error messages
     """
@@ -110,16 +110,16 @@ def draw_dice_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap
 def end_round_resolver(_, __, gameId: str, dependencies: DIContainer = bootstrap()):
     """
     Resolver for the 'endRound' mutation.
-    
+
     Ends the current player's turn by executing a score command. This calculates
     the player's score for the round and advances to the next player.
-    
+
     Args:
         _ : GraphQL root object (unused)
         __ : GraphQL info object (unused)
         gameId (str): ID of the game to end the round for
         dependencies (DIContainer): Dependency injection container
-        
+
     Returns:
         dict: RoundResult object with either the final round state or error messages
     """
