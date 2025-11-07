@@ -1,3 +1,14 @@
+"""
+FastAPI Server Configuration for Zombie Nom Nom API
+
+This module sets up the main FastAPI application with middleware, authentication,
+and routing for the Zombie Dice game API. It includes CORS configuration,
+JWT token verification middleware, and basic health/version endpoints.
+
+The server combines GraphQL functionality (mounted at root) with REST endpoints
+for health checks, version information, and user authentication.
+"""
+
 from fastapi import FastAPI, HTTPException, Request
 from importlib.metadata import version
 
@@ -36,6 +47,20 @@ async def hydrate_user(
     request: Request,
     call_next,
 ):
+    """
+    HTTP middleware to authenticate and hydrate user information from JWT tokens.
+
+    This middleware extracts JWT tokens from requests, verifies them using OAuth,
+    and adds user information to the request state. If authentication fails,
+    appropriate error responses are returned.
+
+    Args:
+        request (Request): The incoming HTTP request
+        call_next: The next middleware/handler in the chain
+
+    Returns:
+        Response: Either the next handler's response or an authentication error
+    """
     try:
         token = await token_auth_scheme(request)
     except HTTPException as e:
@@ -55,16 +80,40 @@ async def hydrate_user(
 
 @fastapi_app.get("/healthz")
 def healthz():
+    """
+    Health check endpoint to verify the API is running.
+
+    Returns:
+        dict: Simple status object indicating the service is operational
+    """
     return {"o": "k"}
 
 
 @fastapi_app.get("/version")
 def version():
+    """
+    Version information endpoint.
+
+    Returns:
+        dict: Object containing the current API version
+    """
     return {"version": _version}
 
 
 @fastapi_app.get("/me")
 def get_me(request: Request):
+    """
+    User information endpoint that returns authenticated user details.
+
+    This endpoint returns the user information that was populated by the
+    authentication middleware, or None if no user is authenticated.
+
+    Args:
+        request (Request): The HTTP request containing user state
+
+    Returns:
+        dict | None: User information or None if not authenticated
+    """
     return getattr(request.state, "user", None)
 
 

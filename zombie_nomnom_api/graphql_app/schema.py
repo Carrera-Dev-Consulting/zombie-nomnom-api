@@ -20,13 +20,25 @@ TRegistry = TypeVar("TRegistry", bound=SchemaBindable)
 
 
 def register(graphql_type: TRegistry) -> TRegistry:
-    """Adds bindable type to schema registry for the instantiation of the graphql executable schema.
+    """
+    Adds bindable type to schema registry for the instantiation of the GraphQL executable schema.
 
-    **Parameters**
-    - graphql_type (SchemaBindable): The type we are registering.
+    This function registers GraphQL types (ObjectType, ScalarType, etc.) with the global
+    schema registry. The registry is used when building the executable schema to bind
+    resolvers and type definitions together.
 
-    **Returns**
-    - SchemaBindable: The type that was registered
+    Args:
+        graphql_type (SchemaBindable): The GraphQL type to register (must implement SchemaBindable)
+
+    Returns:
+        SchemaBindable: The same type that was registered, for chaining
+
+    Raises:
+        AttributeError: If the type doesn't have a 'name' attribute
+
+    Example:
+        >>> @register
+        ... Query = ObjectType("Query")
     """
     if not isinstance(graphql_type, SchemaBindable):
         _logger.warning(
@@ -52,16 +64,44 @@ def register(graphql_type: TRegistry) -> TRegistry:
 
 
 def register_enum(enum_type: type[Enum], *, name: str = None):
-    """Shortcut function to register the enum type to the graphql type registry.
+    """
+    Shortcut function to register an enum type to the GraphQL type registry.
 
-    **Parameters**
-    - enum_type (EnumType): The enum type we want to add to graphql schema.
-    - name (str, optional): An alias name used by grapqhl to refer to the enum if the enum name is different then what is in the schema.
+    This convenience function wraps Python enum types in an Ariadne EnumType
+    and registers them with the schema registry for use in GraphQL operations.
+
+    Args:
+        enum_type (type[Enum]): The Python enum class to register
+        name (str, optional): Alias name for GraphQL. If None, uses the enum's __name__
+
+    Returns:
+        EnumType: The registered EnumType instance
+
+    Example:
+        >>> from enum import Enum
+        >>> class Color(Enum):
+        ...     RED = "red"
+        ...     BLUE = "blue"
+        >>> register_enum(Color)
     """
     return register(EnumType(name or enum_type.__name__, enum_type))
 
 
 def build_schema():
+    """
+    Build the executable GraphQL schema from the schema definition and registered types.
+
+    This function combines the GraphQL schema definition file (schema.gql) with all
+    registered type bindings to create a fully executable schema that can process
+    GraphQL queries and mutations.
+
+    Returns:
+        GraphQLSchema: The executable GraphQL schema with bound resolvers
+
+    Raises:
+        FileNotFoundError: If the schema.gql file cannot be found
+        GraphQLError: If there are issues building the executable schema
+    """
     path_to_schema = os.path.normpath(
         os.path.join(
             os.path.dirname(__file__),
